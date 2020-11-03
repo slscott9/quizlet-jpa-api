@@ -2,10 +2,15 @@ package com.stuart.quizletjpaapigradle.controllers;
 
 
 import com.stuart.quizletjpaapigradle.models.Folder;
+import com.stuart.quizletjpaapigradle.models.Term;
 import com.stuart.quizletjpaapigradle.models.User;
+import com.stuart.quizletjpaapigradle.models.UserSet;
 import com.stuart.quizletjpaapigradle.models.dto.UserResponse;
 import com.stuart.quizletjpaapigradle.models.dto.requests.FolderRequest;
+import com.stuart.quizletjpaapigradle.models.dto.requests.SetRequest;
 import com.stuart.quizletjpaapigradle.repositories.FolderRepository;
+import com.stuart.quizletjpaapigradle.repositories.SetRepository;
+import com.stuart.quizletjpaapigradle.repositories.TermRepository;
 import com.stuart.quizletjpaapigradle.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +27,12 @@ public class UsersController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    TermRepository termRepository;
+
+    @Autowired
+    SetRepository setRepository;
 
     @Autowired
     FolderRepository folderRepository;
@@ -72,4 +83,28 @@ public class UsersController {
     }
 
 
+    @PostMapping("/addSets")
+    public ResponseEntity<String> addSets(@RequestBody SetRequest setRequest) {
+        Optional<User> optionalUser = userRepository.findByEmail(setRequest.getUserEmail());
+
+        if(!optionalUser.isPresent()){
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }
+
+        for(UserSet set : setRequest.getUserSets()){
+            set.setUser(optionalUser.get()); //set user for this set
+
+            for(Term term : set.getTerms()){ //for each set's terms set their user and user set properties
+
+                term.setUser(optionalUser.get());
+                term.setUserSet(set);
+            }
+            setRepository.save(set); //inserting sets saves its terms into term table as well because of one to many relationship one user set to many terms
+
+
+        }
+
+        return new ResponseEntity(HttpStatus.CREATED);
+
+    }
 }

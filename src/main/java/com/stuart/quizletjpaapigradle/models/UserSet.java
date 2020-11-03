@@ -19,7 +19,6 @@ public class UserSet {
 
     private String setName;
 
-    private String folderId;
 
     private String userEmail;
 
@@ -34,7 +33,6 @@ public class UserSet {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private User user;
 
-    @Nullable
     @OneToMany(mappedBy = "userSet", cascade = CascadeType.ALL)
     private Set<Term> terms = new HashSet<>();
 
@@ -45,9 +43,7 @@ public class UserSet {
     public void setTerms(@Nullable Set<Term> terms) {
         this.terms = terms;
 
-        for(Term term : terms) {
-            term.setSetId(this.setId);
-        }
+
     }
 
 
@@ -68,13 +64,6 @@ public class UserSet {
         this.setName = setName;
     }
 
-    public String getFolderId() {
-        return folderId;
-    }
-
-    public void setFolderId(String folderId) {
-        this.folderId = folderId;
-    }
 
     public String getUserEmail() {
         return userEmail;

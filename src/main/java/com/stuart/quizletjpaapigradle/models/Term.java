@@ -13,7 +13,6 @@ public class Term {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long parentSetId;
 
     private String question;
 
@@ -39,16 +38,6 @@ public class Term {
     public void setUserSet(UserSet userSet) {
         this.userSet = userSet;
     }
-
-
-    public Long getSetId() {
-        return parentSetId;
-    }
-
-    public void setSetId(Long setId) {
-        this.parentSetId = setId;
-    }
-
 
 
     public Long getId() {
