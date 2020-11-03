@@ -11,6 +11,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+
+/*
+    JPA spring security does not support auth out of the box
+
+    So we must provide a user service that can provide authentication with user details(password and username)
+
+    spring security will then use these user details to perform authentication, checking if the user details
+
+    this class gives it match
+ */
 @Service
 public class MyUserDetailsService implements UserDetailsService {
 

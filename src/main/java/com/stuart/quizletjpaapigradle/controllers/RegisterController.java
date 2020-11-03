@@ -36,7 +36,8 @@ public class RegisterController {
                 passwordEncoder.encode(userDto.getPassword()),
                 true,
                 "USER",
-                userDto.getFolders()
+                userDto.getFolders(),
+                userDto.getSets()
         );
 
         userRepository.save(user);

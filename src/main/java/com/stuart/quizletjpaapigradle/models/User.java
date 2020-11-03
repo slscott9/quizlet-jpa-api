@@ -4,6 +4,7 @@ import org.graalvm.compiler.api.replacements.Fold;
 import org.hibernate.annotations.GeneratorType;
 import org.springframework.lang.Nullable;
 
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,7 +20,15 @@ public class User {
 
     }
 
-    public User(String email, String userName, String password, Boolean active, String roles, @Nullable Set<Folder> folders){
+    public User(
+            String email,
+            String userName,
+            String password,
+            Boolean active,
+            String roles,
+            @Nullable Set<Folder> folders,
+            @Nullable Set<UserSet> sets
+    ){
         this.email = email;
         this.userName = userName;
         this.password = password;
@@ -50,6 +59,43 @@ public class User {
 
         for(Folder folder : folders){
             folder.setUser(this);
+            folder.setUserEmail(this.email); //sets each folders email property
+        }
+    }
+
+
+
+    @Nullable
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<UserSet> sets = new HashSet<>();
+
+    public Set<UserSet> getSets() {
+        return sets;
+    }
+
+    public void setSets(@Nullable Set<UserSet> sets) {
+        this.sets = sets;
+
+        for(UserSet set : sets){
+            set.setUser(this);
+            set.setUserEmail(this.email);
+        }
+    }
+
+    @Nullable
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Term> terms = new HashSet<>();
+
+    public Set<Term> getTerms() {
+        return this.terms;
+    }
+
+    public void setTerms(@Nullable Set<Term> terms){
+        this.terms = terms;
+
+        for(Term term : terms){
+            term.setUser(this);
+            term.setUserEmail(this.email);
         }
     }
 

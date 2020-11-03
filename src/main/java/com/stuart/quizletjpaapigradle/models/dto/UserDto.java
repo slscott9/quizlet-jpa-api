@@ -1,6 +1,7 @@
 package com.stuart.quizletjpaapigradle.models.dto;
 
 import com.stuart.quizletjpaapigradle.models.Folder;
+import com.stuart.quizletjpaapigradle.models.UserSet;
 import org.springframework.lang.Nullable;
 
 import java.util.Set;
@@ -10,6 +11,19 @@ public class UserDto {
     private String userName;
     private String email;
     private String password;
+
+    private Set<Folder> folders;
+
+    private Set<UserSet> sets;
+
+
+    public Set<UserSet> getSets() {
+        return sets;
+    }
+
+    public void setSets(Set<UserSet> sets) {
+        this.sets = sets;
+    }
 
 
     @Nullable
@@ -21,7 +35,6 @@ public class UserDto {
         this.folders = folders;
     }
 
-    private Set<Folder> folders;
 
     public String getUserName() {
         return userName;

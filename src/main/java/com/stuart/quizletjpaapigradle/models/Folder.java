@@ -15,8 +15,14 @@ public class Folder {
     private String userEmail;
     @Nullable
     private String description;
-    Long timeStamp;
 
+    private Long timeStamp;
+
+
+    /*
+        User property is set when folder are inserted allowing to query
+        for users email and receive folders belonging to the user email
+     */
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "email")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
