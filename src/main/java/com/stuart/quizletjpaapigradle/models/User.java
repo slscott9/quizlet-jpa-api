@@ -1,9 +1,6 @@
 package com.stuart.quizletjpaapigradle.models;
 
-import org.graalvm.compiler.api.replacements.Fold;
-import org.hibernate.annotations.GeneratorType;
 import org.springframework.lang.Nullable;
-
 
 import javax.persistence.*;
 import java.util.HashSet;

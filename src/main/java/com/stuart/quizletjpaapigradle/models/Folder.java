@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Folder {
@@ -13,10 +15,10 @@ public class Folder {
     private long id;
     private String folderName;
     private String userEmail;
+    private String userName;
     @Nullable
     private String description;
-
-    private Long timeStamp;
+    private Boolean isSynced;
 
 
     /*
@@ -27,6 +29,30 @@ public class Folder {
     @JoinColumn(name = "email")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private User user;
+
+
+
+    @Nullable
+    @OneToMany(mappedBy = "parentFolder", cascade = CascadeType.ALL)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Set<UserSet> userSets = new HashSet<>();
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    @Nullable
+    public Set<UserSet> getUserSets() {
+        return userSets;
+    }
+
+    public void setUserSets(@Nullable Set<UserSet> userSets) {
+        this.userSets = userSets;
+    }
 
     public long getId() {
         return id;
@@ -61,12 +87,12 @@ public class Folder {
         this.description = description;
     }
 
-    public Long getTimeStamp() {
-        return timeStamp;
+    public Boolean getIsSynced() {
+        return isSynced;
     }
 
-    public void setTimeStamp(Long timeStamp) {
-        this.timeStamp = timeStamp;
+    public void setIsSynced(Boolean isSynced) {
+        this.isSynced = isSynced;
     }
 
     public User getUser() {

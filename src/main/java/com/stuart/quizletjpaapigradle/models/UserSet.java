@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,7 +23,21 @@ public class UserSet {
 
     private Integer termCount;
 
-    private Long timeStamp;
+    private Boolean isSynced;
+
+
+    @Nullable
+    private String folderId;
+
+    @Nullable
+    public String getFolderId() {
+        return folderId;
+    }
+
+    public void setFolderId(@Nullable String folderId) {
+        this.folderId = folderId;
+    }
+
 
 
 
@@ -36,14 +49,29 @@ public class UserSet {
     @OneToMany(mappedBy = "userSet", cascade = CascadeType.ALL)
     private Set<Term> terms = new HashSet<>();
 
+
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "id")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private Folder parentFolder;
+
+
+
+    public Folder getFolder() {
+        return parentFolder;
+    }
+
+    public void setFolder(Folder folder) {
+        this.parentFolder = folder;
+    }
+
     public Set<Term> getTerms() {
         return this.terms;
     }
 
     public void setTerms(@Nullable Set<Term> terms) {
         this.terms = terms;
-
-
     }
 
 
@@ -81,12 +109,12 @@ public class UserSet {
         this.termCount = termCount;
     }
 
-    public Long getTimeStamp() {
-        return timeStamp;
+    public Boolean getIsSynced() {
+        return isSynced;
     }
 
-    public void setTimeStamp(Long timeStamp) {
-        this.timeStamp = timeStamp;
+    public void setIsSynced(Boolean isSynced) {
+        this.isSynced = isSynced;
     }
 
     public User getUser() {

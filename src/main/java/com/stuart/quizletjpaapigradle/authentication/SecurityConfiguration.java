@@ -20,10 +20,10 @@ public class SecurityConfiguration  extends WebSecurityConfigurerAdapter {
     @Autowired
     UserDetailsService userDetailsService;
 
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.userDetailsService(userDetailsService);
-//    }
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService);
+    }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -43,6 +43,8 @@ public class SecurityConfiguration  extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
+                .antMatchers("/login")
+                .permitAll()
                 .antMatchers("/register")
                 .permitAll()
                 .anyRequest()
@@ -50,7 +52,6 @@ public class SecurityConfiguration  extends WebSecurityConfigurerAdapter {
                 .and()
                 .httpBasic();
 
-        http.headers().frameOptions().disable();
 
 
 

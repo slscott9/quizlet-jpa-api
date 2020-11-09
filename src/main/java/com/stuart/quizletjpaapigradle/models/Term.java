@@ -13,12 +13,15 @@ public class Term {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long parentSetId;
 
     private String question;
 
     private String answer;
 
     private String userEmail;
+
+    private Boolean isSynced;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "email")
@@ -30,6 +33,25 @@ public class Term {
     @JoinColumn(name = "setId")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private UserSet userSet;
+
+
+
+    public Boolean getSynced() {
+        return isSynced;
+    }
+
+    public void setSynced(Boolean synced) {
+        isSynced = synced;
+    }
+
+
+    public Long getParentSetId() {
+        return parentSetId;
+    }
+
+    public void setParentSetId(Long parentSetId) {
+        this.parentSetId = parentSetId;
+    }
 
     public UserSet getUserSet() {
         return userSet;

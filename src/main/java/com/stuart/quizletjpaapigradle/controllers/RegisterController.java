@@ -3,16 +3,13 @@ package com.stuart.quizletjpaapigradle.controllers;
 
 import com.stuart.quizletjpaapigradle.models.User;
 import com.stuart.quizletjpaapigradle.models.dto.UserDto;
+import com.stuart.quizletjpaapigradle.models.dto.requests.responses.ServerResponse;
 import com.stuart.quizletjpaapigradle.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Set;
 
 @RestController
 public class RegisterController {
@@ -28,8 +25,7 @@ public class RegisterController {
 
 
     @PostMapping("/register")
-    @ResponseStatus(code = HttpStatus.CREATED)
-    public void register(@RequestBody UserDto userDto){
+    public ServerResponse register(@RequestBody UserDto userDto){
         User user = new User(
                 userDto.getEmail(),
                 userDto.getUserName(),
@@ -41,5 +37,7 @@ public class RegisterController {
         );
 
         userRepository.save(user);
+
+        return new ServerResponse("Successfully registered", true);
     }
 }
