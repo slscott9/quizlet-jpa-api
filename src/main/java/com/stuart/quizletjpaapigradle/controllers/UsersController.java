@@ -1,12 +1,14 @@
 package com.stuart.quizletjpaapigradle.controllers;
 
 
+import com.stuart.quizletjpaapigradle.models.Folder;
 import com.stuart.quizletjpaapigradle.models.Term;
 import com.stuart.quizletjpaapigradle.models.User;
 import com.stuart.quizletjpaapigradle.models.UserSet;
 import com.stuart.quizletjpaapigradle.models.dto.UserResponse;
 import com.stuart.quizletjpaapigradle.models.dto.requests.SetRequest;
 import com.stuart.quizletjpaapigradle.models.dto.requests.responses.ServerResponse;
+import com.stuart.quizletjpaapigradle.repositories.FolderRepository;
 import com.stuart.quizletjpaapigradle.repositories.SetRepository;
 import com.stuart.quizletjpaapigradle.repositories.TermRepository;
 import com.stuart.quizletjpaapigradle.repositories.UserRepository;
@@ -34,6 +36,9 @@ public class UsersController {
 
     @Autowired
     SetRepository setRepository;
+
+    @Autowired
+    FolderRepository folderRepository;
 
 
     @GetMapping("/folders")
@@ -139,9 +144,26 @@ public class UsersController {
 
     }
 
+    @PostMapping("/addFolder/{userEmail}")
+    public ResponseEntity<Folder> addFolder(@RequestBody Folder folder, @PathVariable String userEmail){
+        Optional<User> optionalUser = userRepository.findByEmail(userEmail);
+
+        System.out.println(optionalUser.get().getEmail().toString());
+
+        if(!optionalUser.isPresent()){
+            return ResponseEntity.unprocessableEntity().build();
+        }
+
+        folder.setUser(optionalUser.get());
+
+        Folder savedFolder = folderRepository.save(folder);
+
+        return new ResponseEntity<Folder>( savedFolder, HttpStatus.OK);
+    }
 
 
-    @PostMapping("/addFolders")
+
+
 
 
 }

@@ -19,6 +19,7 @@ public class Folder {
     @Nullable
     private String description;
     private Boolean isSynced;
+    private String termCount;
 
 
     /*
@@ -101,5 +102,13 @@ public class Folder {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getTermCount() {
+        return termCount;
+    }
+
+    public void setTermCount( String termCount) {
+        this.termCount = termCount;
     }
 }
